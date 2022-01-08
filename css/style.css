@@ -1,21 +1,13 @@
 body {
     background-color: White;
-    color: white;
+    color: bla;
     padding: 0 auto;
     margin: 0 auto;
-}
-
-.container {
     color: black;
 }
 
 a {
     text-decoration: none;
-    width: 140px;
-    border-radius: 25px;
-    margin-right: 15px;
-    background-color: black;
-    padding: 10px;
 }
 
 .menu {
@@ -38,4 +30,21 @@ a {
     display: inline;
     padding-left: 3px;
     padding-right: 3px;
+    color: white;
+    width: 140px;
+    border-radius: 25px;
+    margin-right: 15px;
+    background-color: black;
+    padding: 10px;
+}
+
+.menu-init li:hover {
+    color: black;
+    background-color: white;
+}
+
+#content p {
+    text-align: center;
+    font-size: 5em;
+    margin: 52 auto;
 }
