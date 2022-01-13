@@ -1,0 +1,222 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Video HTML</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/anime-play.css">
+
+</head>
+
+<body onload="loadVideo()">
+
+    <div id="video-container">
+        <div id="search-container">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="button-addon2" id="search-input">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="searchVideo()">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <video controls="" autoplay="">Your browser does not support the video tag.</video>
+        <!-- <div id="video-alert">Autoplay desactivado</div> -->
+    </div>
+
+    <div id="filtro">
+        <select name="video" id="collectionSelector" onchange="loadList()"><option>Selecciona una colección</option><option>037 - 107 Saga de Freezer</option><option>1. Sword Art Online - Primera Temporada</option><option>2. Sword Art Online - Segunda Temporada</option><option>200 - 291 Saga Majin Boo</option><option>Dragon Ball GT</option></select>
+        <ul id="listCollectionsLoaded"></ul>
+    </div>
+
+
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="folders/folders.php"></script>
+    <script>
+        var pauseVideo = false;
+        var videoCount = 3;
+
+        function loadVideo() {
+            const video = document.querySelector('video');
+            const collection = document.querySelector('#listCollectionsLoaded');
+            collection.innerHTML = '';
+
+            const collectionList = videos.filter((a, i, s) => i === s.findIndex((t) => t.collection === a.collection));
+
+            const select = document.querySelector('#collectionSelector');
+            select.innerHTML = '';
+            // agregar la opci'on por defecto que diga 'Selecciona una colección'
+            const option = document.createElement('option');
+            option.textContent = 'Selecciona una colección';
+            select.appendChild(option);
+
+            for (let i = 0; i < collectionList.length; i++) {
+                const option = document.createElement('option');
+                option.textContent = collectionList[i].collection;
+                select.appendChild(option);
+            }
+        }
+
+        function loadList() {
+            const video = document.querySelector('video');
+            const select = document.querySelector('#collectionSelector');
+            const collection = document.querySelector('#listCollectionsLoaded');
+            collection.innerHTML = '';
+
+            // filtra la variable 'videos' por el valor del select en el campo 'collection'
+            const collectionSelected = videos.filter((a, i, s) => a.collection === select.value);
+
+            for (let i = 0; i < collectionSelected.length; i++) {
+                const file = collectionSelected[i];
+                const path_video = file.filename;
+
+                // create list item and object url for the video file
+                const listItem = document.createElement('li');
+                listItem.objUrl = 'assets/videos/folders/' + path_video;
+                listItem.textContent = path_video.replace(file.collection, '').replace('\\', '').replace('/', '');
+
+                // give list item a click event listener for the corresponding video
+                listItem.addEventListener('click', function(e) {
+                    this.classList.add('played');
+                    video.src = this.objUrl;
+                    video.playbackRate = Number(1);
+
+                    // ocultar el div con id 'filtro'
+                    const filtro = document.querySelector('#filtro');
+                    filtro.style.display = 'none';
+
+                });
+
+                // crea una lista de videos separado por collection, cada item al hacer click carga el video
+                if (file.collection) {
+                    const listCollection = document.createElement('li');
+                    listCollection.textContent = path_video.replace(file.collection, '').replace('\\', '').replace('/', '');
+                    listCollection.addEventListener('click', function(e) {
+
+                        const listCollection = document.querySelectorAll('#listCollectionsLoaded li');
+                        for (let i = 0; i < listCollection.length; i++) {
+                            listCollection[i].classList.remove('played');
+                        }
+                        this.classList.add('played');
+                        video.src = listItem.objUrl;
+                        video.name = listItem.textContent;
+                        video.playbackRate = Number(1);
+
+                        // guardar el nombre del video en el registro de eventos
+                        console.log('start recordPlayback!');
+                        recordPlayback(video);
+                    });
+                    collection.appendChild(listCollection);
+                }
+
+            }
+        }
+
+        // add keyboard shortcuts for pause (space) and 5 sec jump (left/right arrow)
+        const video = document.querySelector('video');
+        video.addEventListener('ended', function() {
+            const src = this.src;
+            const nextVideoPromise = new Promise((resolve, reject) => {
+                const video = document.querySelector('video');
+                const collection = document.querySelectorAll('#listCollectionsLoaded li');
+                console.log(collection);
+                collection.forEach(function(item) {
+                    if (item.outerText === video.name) {
+                        const nextVideo = item.nextElementSibling;
+                        if (nextVideo) {
+                            resolve(nextVideo);
+                        }
+                    }
+                });
+            });
+
+            nextVideoPromise.then((nextVideo) => {
+                if (nextVideo) {
+                    nextVideo.click();
+                    if (pauseVideo && videoCount === 0) {
+                        video.pause();
+                        console.log('video is already paused!');
+
+                        if (confirm('¿Reanudar reproducción?')) {
+                            video.play();
+                            videoCount = 3;
+                        }
+                    }
+                    console.log('siguiente video cargado');
+                } else {
+                    console.log('no hay siguiente video');
+                }
+            });
+        });
+
+        // fucion que busque el video en la variable 'videos' por el valor del campo 'src'.
+        // la funcion tendrá un parametro llamado url
+        function searchVideo(name) {
+            console.log('name: ' + name);
+            const video = document.querySelector('video');
+            const collection = document.querySelector('#listCollectionsLoaded');
+            // collection.innerHTML = '';
+
+            // const collectionList = videos.filter((a, i, s) => i === s.findIndex((t) => t.filename === name));
+            const collectionList = videos.filter((a, i, s) => i === s.findIndex(((t) => t.filename.indexOf(name) > -1)) + 1);
+            console.log(collectionList);
+            return collectionList;
+
+        }
+
+
+        function recordPlayback(video) {
+            console.log('almacenando reporte del video: ' + video.name);
+            $.ajax({
+                method: 'POST',
+                url: 'js/infologged.php',
+                data: {
+                    video: video.name
+                },
+            }).done(function(response) {
+                console.log(response);
+                if (videoCount > 0) {
+                    videoCount--;
+                }
+            });
+        }
+
+        document.addEventListener('keydown', e => {
+
+            switch (e.keyCode) {
+                case 32: // space
+                    video.paused ? video.play() : video.pause();
+                    break;
+                case 37: // left arrow
+                    video.currentTime += -5;
+                    break;
+                case 39: // right arrow
+                    video.currentTime += 5;
+                    break;
+                case 70: // f
+                    video.requestFullscreen();
+                    break;
+                case 77: // m
+                    video.muted = !video.muted;
+                    break;
+                case 76: // switch que permite visualizar o no el div con id 'filtro'
+                    const filtro = document.querySelector('#filtro');
+                    filtro.style.display = (filtro.style.display === 'none') ? 'block' : 'none';
+                    break;
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>
