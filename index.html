@@ -6,50 +6,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aventurero Crack</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <!-- <link rel="stylesheet" href="css/style.css" /> -->
+    <script src="js/menu-draw.js"></script>
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 
-<body>
-    <video src="backgroud.mp4" autoplay loop></video>
 
+
+<body onload="drawMenu();">
+    <div class="hidden">
+        <div class="centrado" id="onload">
+            <div class="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+    </div>
     <div class="container">
-        <nav>
-            <ul>
-                <li>
-                    <a href="index.html">Home</a>
-                </li>
-                <li>
-                    <a href="games.html">Games</a>
-                    <ul>
-                        <li>
-                            <a href="2d.html">Games 2D</a>
-                        </li>
-                        <li>
-                            <a href="3d.html">Games 3D</a>
-                        </li>
 
-                        <li>
-                            <a href="option.html">Options</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="movies.html">Movies</a>
-                    <ul>
-                        <li>
-                            <a href="action.html">Action Movies</a>
-                        </li>
-                        <li>
-                            <a href="horror.html">Horror Movies</a>
-                        </li>
 
-                        <li>
-                            <a href="anime.html">Anime</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
+        <div id="menu"></div>
         <div id="content">
             <header>
                 <hgroup>
@@ -66,14 +50,39 @@
 
 
         </div>
-        <nav id="menu">
 
-        </nav>
 
     </div>
+    <header class="bg_animate">
+        <div class="header_nav">
+            <div class="contenedor">
+            </div>
+        </div>
 
-    </nav>
+        <section class="banner contenedor">
+            <secrion class="banner_title">
+                <h2><br></h2>
+            </secrion>
+            <div class="banner_img">
+                <img src="laptop-support.png" alt="">
+            </div>
+        </section>
 
+        <div class="burbujas">
+            <div class="burbuja"></div>
+            <div class="burbuja"></div>
+            <div class="burbuja"></div>
+            <div class="burbuja"></div>
+            <div class="burbuja"></div>
+            <div class="burbuja"></div>
+            <div class="burbuja"></div>
+            <div class="burbuja"></div>
+            <div class="burbuja"></div>
+            <div class="burbuja"></div>
+        </div>
+    </header>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/codigo.js"></script>
 </body>
 
 </html>

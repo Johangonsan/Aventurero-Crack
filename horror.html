@@ -6,14 +6,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Games</title>
-    <link rel="stylesheet" href="css/style-h.css">
+    <link rel="stylesheet" href="css/style_horror.css">
+    <script src="js/menu-draw.js"></script>
+    <link rel="stylesheet" href="css/menu.css">
 </head>
 
-<body>
-    <!-- The video -->
-    <video autoplay muted loop id="myVideo">
-        <source src="backgroud.mp4" type="video/mp4">
-    </video>
+<body onload="drawMenu();">
+    <div id="menu"></div>
+
+    <nav class="color">
+        <header class="bg_animate">
+            <div class="header_nav">
+                <div class="contenedor">
+                    <h1>Welcome my Movies of Horror</h1>
+                    <ul id="menu-movies">
+
+                    </ul>
+
+                </div>
+            </div>
+
+            <section class="banner contenedor">
+                <secrion class="banner_title">
+                    <h2>The movies do<br>not load?</h2>
+                    <a href="#" class="llamanos">Inform Me!</a>
+                </secrion>
+                <div class="banner_img">
+                    <img src="Sin título.png" alt="">
+                </div>
+            </section>
+
+            <div class="burbujas">
+                <div class="burbuja"></div>
+                <div class="burbuja"></div>
+                <div class="burbuja"></div>
+                <div class="burbuja"></div>
+                <div class="burbuja"></div>
+                <div class="burbuja"></div>
+                <div class="burbuja"></div>
+                <div class="burbuja"></div>
+                <div class="burbuja"></div>
+                <div class="burbuja"></div>
+            </div>
+        </header>
+    </nav>
+
 </body>
 
 </html>
