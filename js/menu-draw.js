@@ -117,4 +117,13 @@ function drawMenu() {
     var divMenu = document.querySelector('#menu');
     divMenu.appendChild(menu);
 
+    disableLoader();
+
+}
+
+
+function disableLoader() {
+
+    $('#onload').fadeOut();
+    $('div').removeClass('hidden');
 }
